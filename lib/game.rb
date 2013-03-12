@@ -13,6 +13,10 @@ class Game
     "#{gameboard[6]} #{gameboard[7]} #{gameboard[8]}"
   end 
 
+  def mark_board(player_move, player)
+    gameboard[gameboard.index(player_move)] = player.name 
+  end
+
   def check_for_win(player)
     player.get_combos.each do |combo|
       return true if combo.inject(:+) == 15 
@@ -62,5 +66,6 @@ game = Game.new
     puts "you won"
     break
   end
-  game.gameboard[game.gameboard.index(player_move)] = player.name 
+  game.mark_board(player_move, player)
+
 end
