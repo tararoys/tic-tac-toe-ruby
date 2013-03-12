@@ -38,14 +38,15 @@ class Player
     moves.combination(3).to_a
   end
 
-  def get_play(gameboard)
+  def turn(gameboard)
     puts "choose a number on the gameboard"
     board_number = gets.to_i
-    until  gameboard.include?(board_number)
+    until gameboard.include?(board_number)
       puts "choose a number on the board"
       board_number = gets.to_i
     end
-    return board_number
+    moves << board_number
+    board_number
   end
 end
 
@@ -55,9 +56,8 @@ game = Game.new
   player = game.whos_turn_is_it(num)
   puts "It is player #{player.name}'s turn"
   puts game.display
-  player_move = player.get_play(game.gameboard)
+  player_move = player.turn(game.gameboard)
    
-  player.moves.push(player_move) 
   if game.check_for_win(player)
     puts "you won"
     break
