@@ -14,17 +14,14 @@ class Game
   end 
 
   def check_for_win(player_positions)
-    if player_positions.length >= 3
-      triples = player_positions.combination(3).to_a
-      triples.each do |triple|
-        sum = triple.inject(:+)
-        if sum === 15
-          puts "you won"
-          return true
-        end
-      end
-      return false
+    get_combos(player_positions).each do |combo|
+      return true if combo.inject(:+) == 15 
     end
+    false
+  end
+  
+  def get_combos(player_positions)
+    player_positions.combination(3).to_a
   end
 
   def whos_turn_is_it(num) 
@@ -64,9 +61,10 @@ game = Game.new
   puts display
   player_move = player.get_play(game.gameboard)
    
-   player.moves.push(player_move) 
-   if game.check_for_win(player.moves)
-     break
-   end
+  player.moves.push(player_move) 
+  if game.check_for_win(player.moves)
+    puts "you won"
+    break
+  end
   game.gameboard[game.gameboard.index(player_move)] = player.name 
 end
