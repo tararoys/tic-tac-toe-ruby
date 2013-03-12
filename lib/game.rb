@@ -1,8 +1,8 @@
 class Game 
   attr_reader :gameboard, :playerX, :playerO 
+
   def initialize
     @gameboard = [8, 1, 6, 3, 5, 7, 4, 9, 2]
-    
     @playerX = Player.new("x") 
     @playerO = Player.new("O") 
   end
@@ -25,14 +25,7 @@ class Game
   end
 
   def whos_turn_is_it(num) 
-    if num.odd?
-      puts "player x turn"
-      player = playerX 
-    else 
-      puts "player o turn" 
-      player = playerO
-    end
-    return player 
+    num.odd? ? playerX : playerO
   end
 end
 
@@ -57,6 +50,7 @@ game = Game.new
 
 9.times do |num|   
   player = game.whos_turn_is_it(num)
+  puts "It is player #{player.name}'s turn"
   display = game.show_gameboard(game.gameboard)
   puts display
   player_move = player.get_play(game.gameboard)
