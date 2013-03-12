@@ -7,7 +7,7 @@ class Game
     @playerO = Player.new("O") 
   end
 
-  def show_gameboard(gameboard)
+  def display 
     "#{gameboard[0]} #{gameboard[1]} #{gameboard[2]}\n" + 
     "#{gameboard[3]} #{gameboard[4]} #{gameboard[5]}\n" +
     "#{gameboard[6]} #{gameboard[7]} #{gameboard[8]}"
@@ -54,8 +54,7 @@ game = Game.new
 9.times do |num|   
   player = game.whos_turn_is_it(num)
   puts "It is player #{player.name}'s turn"
-  display = game.show_gameboard(game.gameboard)
-  puts display
+  puts game.display
   player_move = player.get_play(game.gameboard)
    
   player.moves.push(player_move) 
