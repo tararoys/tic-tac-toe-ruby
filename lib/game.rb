@@ -3,7 +3,7 @@ class Game
 
   def initialize
     @gameboard = [8, 1, 6, 3, 5, 7, 4, 9, 2]
-    @playerX = Computer_player.new("x") 
+    @playerX = ComputerPlayer.new("x") 
     @playerO = Player.new("O") 
   end
 
@@ -54,7 +54,7 @@ class Player
   end
 end
 
-class Computer_player
+class ComputerPlayer
   attr_accessor :name, :moves
   
   def initialize(name)
@@ -67,12 +67,10 @@ class Computer_player
   end
 
   def turn(gameboard)
-    board_number=rand(9)
-    until gameboard.include?(board_number)
-      board_number = rand(9) 
-    end
-    moves << board_number
-    board_number
+    possible_moves = gameboard.select { |space| space.is_a? Integer}
+    move = possible_moves.sample
+    moves << move 
+    move 
   end
 end
 
