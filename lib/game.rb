@@ -3,7 +3,7 @@ class Game
 
   def initialize
     @gameboard = [8, 1, 6, 3, 5, 7, 4, 9, 2]
-    @playerX = Player.new("x") 
+    @playerX = Computer_player.new("x") 
     @playerO = Player.new("O") 
   end
 
@@ -48,6 +48,28 @@ class Player
     until gameboard.include?(board_number)
       puts "choose a number on the board"
       board_number = gets.to_i
+    end
+    moves << board_number
+    board_number
+  end
+end
+
+class Computer_player
+  attr_accessor :name, :moves
+  
+  def initialize(name)
+    @name = name
+    @moves = [] 
+  end
+
+  def get_combos
+    moves.combination(3).to_a
+  end
+
+  def turn(gameboard)
+    board_number=rand(9)
+    until gameboard.include?(board_number)
+      board_number = rand(9) 
     end
     moves << board_number
     board_number
