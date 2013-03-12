@@ -13,16 +13,13 @@ class Game
     "#{gameboard[6]} #{gameboard[7]} #{gameboard[8]}"
   end 
 
-  def check_for_win(player_positions)
-    get_combos(player_positions).each do |combo|
+  def check_for_win(player)
+    player.get_combos.each do |combo|
       return true if combo.inject(:+) == 15 
     end
     false
   end
   
-  def get_combos(player_positions)
-    player_positions.combination(3).to_a
-  end
 
   def whos_turn_is_it(num) 
     num.odd? ? playerX : playerO
@@ -31,10 +28,16 @@ end
 
 class Player
   attr_accessor :name, :moves
+  
   def initialize(name)
     @name = name
     @moves = [] 
   end
+
+  def get_combos
+    moves.combination(3).to_a
+  end
+
   def get_play(gameboard)
     puts "choose a number on the gameboard"
     board_number = gets.to_i
@@ -56,7 +59,7 @@ game = Game.new
   player_move = player.get_play(game.gameboard)
    
   player.moves.push(player_move) 
-  if game.check_for_win(player.moves)
+  if game.check_for_win(player)
     puts "you won"
     break
   end
