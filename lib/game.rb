@@ -6,6 +6,10 @@ class Game
     @playerX = ComputerPlayer.new("x") 
     @playerO = Player.new("O") 
   end
+  
+  def valid_moves
+    gameboard.select{ |space| space.is_a? Integer }
+  end
 
   def display 
     "#{gameboard[0]} #{gameboard[1]} #{gameboard[2]}\n" + 
@@ -24,9 +28,18 @@ class Game
     false
   end
   
+  def count(letter)
+    letter_count = 0
+    gameboard.each do |symbol|
+      if symbol == letter 
+        letter_count += 1
+      end
+    end 
+    letter_count
+  end 
 
-  def whos_turn_is_it(num) 
-    num.odd? ? playerX : playerO
+  def whos_turn_is_it
+    count('x') == count('O') ? playerX : playerO
   end
 end
 
@@ -42,15 +55,15 @@ class Player
     moves.combination(3).to_a
   end
 
-  def turn(gameboard)
+  def turn(game)
     puts "choose a number on the gameboard"
-    board_number = gets.to_i
-    until gameboard.include?(board_number)
+    move = gets.to_i
+    until game.valid_moves.include?(move)
       puts "choose a number on the board"
-      board_number = gets.to_i
+      move = gets.to_i
     end
-    moves << board_number
-    board_number
+    moves << move
+    move
   end
 end
 
@@ -65,10 +78,28 @@ class ComputerPlayer
   def get_combos
     moves.combination(3).to_a
   end
+  
+ def winning_move(game)
+   winning_moves = []
+   pairs = moves.combination(2).to_a
+   
+   pairs.each  do |pair| 
+      sum = pair.inject(:+)
+      possible_move = 15-sum 
+      if game.valid_moves.include?(possible_move)
+        winning_moves << possible_move 
+      end 
+   end
+   winning_moves
+ end 
 
-  def turn(gameboard)
-    possible_moves = gameboard.select { |space| space.is_a? Integer}
-    move = possible_moves.sample
+  def turn(game)
+    win = winning_move(game) 
+    if win != []
+      move = win[0]
+    else
+      move = game.valid_moves.sample
+    end
     moves << move 
     move 
   end
@@ -76,11 +107,11 @@ end
 
 game = Game.new 
 
-9.times do |num|   
-  player = game.whos_turn_is_it(num)
+until game.valid_moves == [] do   
+  player = game.whos_turn_is_it
   puts "It is player #{player.name}'s turn"
   puts game.display
-  player_move = player.turn(game.gameboard)
+  player_move = player.turn(game)
    
   if game.check_for_win(player)
     puts "you won"
