@@ -1,8 +1,14 @@
 require "game"
 
-describe "gameboard output" do 
-
-  it "looks like this wheeee!"  do    
-    expect(show_gameboard([8,1,6,3,5,7,4,9,2])).to eq("8 1 6\n3 5 7\n4 9 2")
+describe "Winning Move" do
+  before do 
+    @player = ComputerPlayer.new("x")
+    @player.moves=[8, 1]
+    @game = Game.new
+    @game.stub(:gameboard).and_return(['x','x',6,'O','O',7,4,9,2])
+  end
+  it "chooses the winning move" do
+    win = @player.winning_move(@game)
+    expect(win).to eq(6) 
   end
 end

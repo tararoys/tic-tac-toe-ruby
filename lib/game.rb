@@ -80,23 +80,20 @@ class ComputerPlayer
   end
   
  def winning_move(game)
-   winning_moves = []
-   pairs = moves.combination(2).to_a
-   
-   pairs.each  do |pair| 
-      sum = pair.inject(:+)
-      possible_move = 15-sum 
-      if game.valid_moves.include?(possible_move)
-        winning_moves << possible_move 
-      end 
+   pairs = moves.combination(2).to_a 
+   pairs.each do |pair| 
+     sum = pair.inject(:+)
+     possible_move = 15 - sum 
+     if game.valid_moves.include?(possible_move)
+       return possible_move 
+     end 
    end
-   winning_moves
  end 
 
   def turn(game)
     win = winning_move(game) 
-    if win != []
-      move = win[0]
+    if win 
+      move = win
     else
       move = game.valid_moves.sample
     end
@@ -105,18 +102,3 @@ class ComputerPlayer
   end
 end
 
-game = Game.new 
-
-until game.valid_moves == [] do   
-  player = game.whos_turn_is_it
-  puts "It is player #{player.name}'s turn"
-  puts game.display
-  player_move = player.turn(game)
-   
-  if game.check_for_win(player)
-    puts "you won"
-    break
-  end
-  game.mark_board(player_move, player)
-
-end
