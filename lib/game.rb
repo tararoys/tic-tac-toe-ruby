@@ -29,13 +29,7 @@ class Game
   end
   
   def count(letter)
-    letter_count = 0
-    gameboard.each do |symbol|
-      if symbol == letter 
-        letter_count += 1
-      end
-    end 
-    letter_count
+    gameboard.select{ |element| element == letter }.count
   end 
 
   def whos_turn_is_it
